@@ -27,15 +27,29 @@ function TodoProvider(props) {
     });
   }
 
-  const completeTodo = (text) => {
-    const todoIndex = todos.findIndex((todo) => todo.text === text);
+  const addTodo = (text) => {
+    const newTodos = [...todos];
+    newTodos.push({
+      id: newTodos.length + 1,
+      completed: false,
+      text: text,
+    });
+    saveTodos(newTodos);
+  };
+
+  const completeTodo = (id, text) => {
+    const todoIndex = todos.findIndex(
+      (todo) => todo.id === id && todo.text === text
+    );
     const newTodos = [...todos];
     newTodos[todoIndex].completed = true;
     saveTodos(newTodos);
   };
 
-  const deleteTodo = (text) => {
-    const todoIndex = todos.findIndex((todo) => todo.text === text);
+  const deleteTodo = (id, text) => {
+    const todoIndex = todos.findIndex(
+      (todo) => todo.id === id && todo.text === text
+    );
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos);
@@ -52,9 +66,10 @@ function TodoProvider(props) {
         setSearchValue,
         searchedTodos,
         completeTodo,
+        addTodo,
         deleteTodo,
         openModal,
-        setOpenModal
+        setOpenModal,
       }}
     >
       {props.children}
